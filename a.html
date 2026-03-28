@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Govinda's Natural Foods - Scan & Order</title>
+    <style>
+        :root { --primary: #4a6741; --accent: #e67e22; --bg: #fdfaf5; --text: #333; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 80px; }
+        
+        /* Header */
+        header { background: var(--primary); color: white; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .table-tag { font-size: 0.8em; background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 10px; }
+
+        /* Search Bar */
+        .search-container { padding: 15px; position: sticky; top: 85px; background: var(--bg); z-index: 99; }
+        #menuSearch { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 25px; box-sizing: border-box; font-size: 16px; }
+
+        /* Menu Styling */
+        .container { max-width: 600px; margin: auto; padding: 10px; }
+        details { background: white; margin-bottom: 10px; border-radius: 8px; overflow: hidden; border: 1px solid #eee; }
+        summary { padding: 15px; font-weight: bold; cursor: pointer; background: #fff; list-style: none; display: flex; justify-content: space-between; }
+        summary::after { content: '＋'; color: var(--primary); }
+        details[open] summary::after { content: '－'; }
+
+        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-top: 1px solid #f9f9f9; }
+        .item-info { flex: 1; padding-right: 10px; }
+        .item-name { font-weight: 600; margin: 0; font-size: 1.05em; }
+        .item-desc { font-size: 0.85em; color: #777; margin: 5px 0; }
+        .item-price { color: var(--primary); font-weight: bold; margin-top: 5px; }
+
+        .add-btn { background: white; border: 1px solid var(--accent); color: var(--accent); padding: 6px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .add-btn:active { background: var(--accent); color: white; }
+
+        /* Bottom Cart Bar */
+        .cart-bar { position: fixed; bottom: 20px; left: 5%; width: 90%; background: var(--primary); color: white; padding: 15px; border-radius: 50px; display: none; justify-content: space-between; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 1001; }
+        .checkout-btn { background: var(--accent); color: white; border: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h2 style="margin:0">Govinda's Cafe</h2>
+    <span class="table-tag">Table #12</span>
+</header>
+
+<div class="search-container">
+    <input type="text" id="menuSearch" placeholder="Search for Fried Rice, Pizza, Shakes..." onkeyup="filterMenu()">
+</div>
+
+<div class="container" id="menu-board">
+    
+    <details open>
+        <summary>Combos (6)</summary>
+        <div class="menu-item">
+            <div class="item-info">
+                <p class="item-name">Fried Rice with Crispy Veg</p>
+                <p class="item-desc">Served with crispy seasoned vegetables.</p>
+                <div class="item-price">₹220</div>
+            </div>
+            <button class="add-btn" onclick="addToCart('Fried Rice w/ Veg', 220)">ADD</button>
+        </div>
+        <div class="menu-item">
+            <div class="item-info">
+                <p class="item-name">Corn Fried Rice with Paneer 65</p>
+                <p class="item-desc">Corn rice served with spicy paneer 65 bites.</p>
+                <div class="item-price">₹280</div>
+            </div>
+            <button class="add-btn" onclick="addToCart('Corn Rice + Paneer 65', 280)">ADD</button>
+        </div>
+    </details>
+
+    <details>
+        <summary>Pizza and Pasta (10)</summary>
+        <div class="menu-item">
+            <div class="item-info">
+                <p class="item-name">Alfredo White Sauce Pasta</p>
+                <p class="item-desc">Creamy white sauce with herbs and cheese.</p>
+                <div class="item-price">₹240</div>
+            </div>
+            <button class="add-btn" onclick="addToCart('Alfredo Pasta', 240)">ADD</button>
+        </div>
+        <div class="menu-item">
+            <div class="item-info">
+                <p class="item-name">Fully Loaded Pizza</p>
+                <p class="item-desc">Vegetables, extra cheese, and bold toppings.</p>
+                <div class="item-price">₹350</div>
+            </div>
+            <button class="add-btn" onclick="addToCart('Loaded Pizza', 350)">ADD</button>
+        </div>
+    </details>
+
+    <details>
+        <summary>Drinks & Beverages (37)</summary>
+        <div class="menu-item">
+            <div class="item-info">
+                <p class="item-name">Extreme Chocolate Fuel Shake</p>
+                <p class="item-desc">Thick, rich chocolate loaded milkshake.</p>
+                <div class="item-price">₹180</div>
+            </div>
+            <button class="add-btn" onclick="addToCart('Chocolate Shake', 180)">ADD</button>
+        </div>
+        <div class="menu-item">
+            <div class="item-info">
+                <p class="item-name">Virgin Mojito</p>
+                <p class="item-desc">Classic mint and lime refreshing cooler.</p>
+                <div class="item-price">₹140</div>
+            </div>
+            <button class="add-btn" onclick="addToCart('Virgin Mojito', 140)">ADD</button>
+        </div>
+    </details>
+
+    <p style="text-align: center; color: #888; font-size: 0.8em; margin-top: 20px;">
+        View full menu on our mobile app
+    </p>
+
+</div>
+
+<div class="cart-bar" id="cartBar">
+    <div><span id="itemCount">0</span> Items | <span id="totalPrice">₹0</span></div>
+    <button class="checkout-btn" onclick="placeOrder()">PLACE ORDER</button>
+</div>
+
+<script>
+    let cart = [];
+    let total = 0;
+
+    function addToCart(name, price) {
+        cart.push({name, price});
+        total += price;
+        updateCartUI();
+    }
+
+    function updateCartUI() {
+        const cartBar = document.getElementById('cartBar');
+        if(cart.length > 0) {
+            cartBar.style.display = 'flex';
+            document.getElementById('itemCount').innerText = cart.length;
+            document.getElementById('totalPrice').innerText = '₹' + total;
+        }
+    }
+
+    function placeOrder() {
+        alert("Order received for Table #12! Your food is being prepared.");
+        cart = [];
+        total = 0;
+        document.getElementById('cartBar').style.display = 'none';
+    }
+
+    function filterMenu() {
+        let input = document.getElementById('menuSearch').value.toLowerCase();
+        let items = document.getElementsByClassName('menu-item');
+        
+        for (let i = 0; i < items.length; i++) {
+            let name = items[i].getElementsByClassName('item-name')[0].innerText.toLowerCase();
+            if (name.includes(input)) {
+                items[i].style.display = "flex";
+            } else {
+                items[i].style.display = "none";
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
